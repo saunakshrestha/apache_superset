@@ -1,0 +1,5 @@
+
+Django==4.2.17
+apache-superset
+psycopg2-binary
+SQLAlchemy<2.0

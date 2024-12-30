@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  superset:
+    build:
+      context: .
+    container_name: superset
+    ports:
+      - "8085:8088" # Map port 8085 on the host to 8088 on the container (default Superset port)
+    environment:
+      SUPERSET_ENV: production
+      SUPERSET_SECRET_KEY: "y2jvkRtTrW9-FbF_0MhLIbM7c0hzIB9Ar9Nj6dx5pjY"
+      # SUPERSET_DATABASE_URI: "postgresql+psycopg2://superset:superset@host.docker.internal:5432/superset"
+      SUPERSET_DATABASE_URI: "postgresql+psycopg2://saunakshrestha:root@host.docker.internal:5432/orbit_chat"
+    volumes:
+      - superset_home:/app
+    depends_on:
+      - clickhouse
+    networks:
+      - superset_net
+    platform: linux/amd64  # Added line
+
+
+  clickhouse:
+    image: yandex/clickhouse-server:latest
+    container_name: clickhouse
+    ports:
+      - "9000:9000"
+      - "8123:8123"
+    networks:
+      - superset_net
+    environment:
+      CLICKHOUSE_USER: "default"
+      CLICKHOUSE_PASSWORD: ""
+      CLICKHOUSE_DB: "default"
+    platform: linux/amd64  # Added line
+
+volumes:
+  superset_home:
+
+networks:
+  superset_net:
+
