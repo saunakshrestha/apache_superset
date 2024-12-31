@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   superset:
@@ -9,13 +8,13 @@ services:
       - "8085:8088" # Map port 8085 on the host to 8088 on the container (default Superset port)
     environment:
       SUPERSET_ENV: production
-      SUPERSET_SECRET_KEY: "y2jvkRtTrW9-FbF_0MhLIbM7c0hzIB9Ar9Nj6dx5pjY"
+      SUPERSET_SECRET_KEY: ${SUPERSET_SECRET_KEY}
       # SUPERSET_DATABASE_URI: "postgresql+psycopg2://superset:superset@host.docker.internal:5432/superset"
       SUPERSET_DATABASE_URI: "postgresql+psycopg2://saunakshrestha:root@host.docker.internal:5432/orbit_chat"
     volumes:
       - superset_home:/app
-    depends_on:
-      - clickhouse
+    # depends_on:
+    #   - clickhouse
     networks:
       - superset_net
     platform: linux/amd64  # Added line
